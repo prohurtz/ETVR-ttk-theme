@@ -56,6 +56,14 @@ sv_ttk.set_theme(darkdetect.theme())
 It's only a matter of an extra import and passing the result of `darkdetect.theme()` to `sv_ttk.set_theme()`. It's that easy!
 
 
+### Theme colors
+`sv_ttk.get_colors()` returns the active palette (`bg`, `fg`, `accent`, `surface`, `border`, `muted`, `selbg`, `selfg`, `disfg`), so plain Tk widgets, canvases and title bars can match the theme.
+
+
+### HiDPI
+On Windows and Linux the theme reads `tk scaling` when it first loads and uses sharp images, spacing and fonts for 125–300% displays. Make your app DPI aware (on Windows, `ctypes.windll.shcore.SetProcessDpiAwareness(1)`) before creating the `Tk` root. Pass `scale=` to the first `set_theme()` call to override the detected scale, and use `sv_ttk.get_scale()` to read it back.
+
+
 ### Dark mode title bar on Windows
 The Sun Valley theme doesn't change the title bar color on Windows when the theme is set to dark. You can use [pywinstyles](https://github.com/Akascape/py-window-styles) to achieve this. Here's an example:
   
@@ -67,7 +75,7 @@ def apply_theme_to_titlebar(root):
 
     if version.major == 10 and version.build >= 22000:
         # Set the title bar color to the background color on Windows 11 for better appearance
-        pywinstyles.change_header_color(root, "#1c1c1c" if sv_ttk.get_theme() == "dark" else "#fafafa")
+        pywinstyles.change_header_color(root, sv_ttk.get_colors()["bg"])
     elif version.major == 10:
         pywinstyles.apply_style(root, "dark" if sv_ttk.get_theme() == "dark" else "normal")
 

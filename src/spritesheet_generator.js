@@ -6,7 +6,17 @@ import sharp from "sharp";
 import { globbyStream } from "globby";
 import { MaxRectsPacker } from "maxrects-packer";
 
+// One sheet per scale: <theme>/*.png is 1x, <theme>/scale-NNN/*.png is NNN% (see scale_sprites.py).
+const variants = [];
 for (const theme of ["dark", "light"]) {
+  variants.push({ theme, glob: `${theme}/*.png`, suffix: "" });
+  for (const dir of fs.readdirSync(theme).sort()) {
+    const match = dir.match(/^scale-(\d+)$/);
+    if (match) variants.push({ theme, glob: `${theme}/${dir}/*.png`, suffix: `_${match[1]}` });
+  }
+}
+
+for (const { theme, glob, suffix } of variants) {
   const packer = new MaxRectsPacker(Infinity, Infinity, 0, {
     pot: false,
     square: false,
@@ -14,7 +24,7 @@ for (const theme of ["dark", "light"]) {
 
   let images = [];
 
-  for await (const path of globbyStream(`${theme}/*.png`)) {
+  for await (const path of globbyStream(glob)) {
     images.push(path);
   }
 
@@ -52,9 +62,9 @@ for (const theme of ["dark", "light"]) {
     })
     .toBuffer();
 
-  fs.writeFileSync(`../sv_ttk/theme/spritesheet_${theme}.png`, packedImage);
+  fs.writeFileSync(`../sv_ttk/theme/spritesheet_${theme}${suffix}.png`, packedImage);
   fs.writeFileSync(
-    `../sv_ttk/theme/sprites_${theme}.tcl`,
+    `../sv_ttk/theme/sprites_${theme}${suffix}.tcl`,
     `set ::spriteinfo [list \\\n  ${packedBin.rects
       .map(
         (e) =>

@@ -12,7 +12,7 @@ long_description = re.sub(
 
 setup(
     name="etvr-ttk-theme",
-    version="2.7.0",
+    version="2.8.0",
     license="MIT",
     author="rdbende",
     author_email="rdbende@proton.me",

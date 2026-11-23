@@ -1,7 +1,8 @@
-source [file join [file dirname [info script]] sprites_dark.tcl]
+source [file join [file dirname [info script]] sprites_dark[::sv_ttk::suffix].tcl]
 
 namespace eval ttk::theme::sv_dark {
   package provide ttk::theme::sv_dark 2.5
+  package provide ttk::theme::sun-valley-dark 2.8.0
 
   array set colors {
     -fg      "#ebe9f0"
@@ -10,6 +11,9 @@ namespace eval ttk::theme::sv_dark {
     -selfg   "#ffffff"
     -selbg   "#6750c8"
     -accent  "#b5a0ee"
+    -surface "#1e1d23"
+    -border  "#3a3842"
+    -muted   "#aeabb8"
   }
 
   proc load_images {imgfile} {
@@ -19,9 +23,10 @@ namespace eval ttk::theme::sv_dark {
       set I($name) [image create photo -width $width -height $height]
       $I($name) copy spritesheet -from $x $y [expr {$x+$width}] [expr {$y+$height}]
     }
+    image delete spritesheet
   }
 
-  load_images [file join [file dirname [info script]] spritesheet_dark.png]
+  load_images [file join [file dirname [info script]] spritesheet_dark[::sv_ttk::suffix].png]
 
   ttk::style theme create sun-valley-dark -parent clam -settings {
         
@@ -34,7 +39,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure TButton -padding {8 2 8 3} -anchor center -foreground $colors(-fg)
+    ttk::style configure TButton -padding [::sv_ttk::px {8 2 8 3}] -anchor center -foreground $colors(-fg)
     ttk::style map TButton -foreground [list disabled "#717076" pressed "#c3c1c8"]
     
     ttk::style element create Button.button image \
@@ -46,7 +51,7 @@ namespace eval ttk::theme::sv_dark {
         {active focus} $I(button-focus-hover) \
         active $I(button-hover) \
         focus $I(button-focus) \
-      ] -border 4 -sticky nsew
+      ] -border [::sv_ttk::px 4] -sticky nsew
 
     # Toolbutton
     ttk::style layout Toolbutton {
@@ -57,7 +62,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure Toolbutton -padding {8 2 8 3} -anchor center
+    ttk::style configure Toolbutton -padding [::sv_ttk::px {8 2 8 3}] -anchor center
     
     ttk::style element create Toolbutton.button image \
       [list $I(empty) \
@@ -66,7 +71,7 @@ namespace eval ttk::theme::sv_dark {
         {active focus} $I(button-focus-hover) \
         active $I(button-hover) \
         focus $I(button-focus) \
-      ] -border 4 -sticky nsew
+      ] -border [::sv_ttk::px 4] -sticky nsew
 
     # Accent.TButton
     ttk::style layout Accent.TButton {
@@ -77,7 +82,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure Accent.TButton -padding {8 2 8 3} -anchor center -foreground "#18171c"
+    ttk::style configure Accent.TButton -padding [::sv_ttk::px {8 2 8 3}] -anchor center -foreground "#18171c"
     ttk::style map Accent.TButton -foreground [list pressed "#463d5e" disabled "#9a989f"]
 
     ttk::style element create AccentButton.button image \
@@ -89,7 +94,7 @@ namespace eval ttk::theme::sv_dark {
         {active focus} $I(button-accent-focus-hover) \
         active $I(button-accent-hover) \
         focus $I(button-accent-focus) \
-      ] -border 4 -sticky nsew
+      ] -border [::sv_ttk::px 4] -sticky nsew
 
     # Menubutton
     ttk::style layout TMenubutton {
@@ -101,7 +106,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure TMenubutton -padding {8 2 13 3}
+    ttk::style configure TMenubutton -padding [::sv_ttk::px {8 2 13 3}]
 
     ttk::style element create Menubutton.button image \
       [list $I(button-rest) \
@@ -110,9 +115,9 @@ namespace eval ttk::theme::sv_dark {
         {active focus} $I(button-focus-hover) \
         active $I(button-hover) \
         focus $I(button-focus) \
-      ] -border 4 -sticky nsew 
+      ] -border [::sv_ttk::px 4] -sticky nsew 
 
-    ttk::style element create Menubutton.indicator image $I(down) -width 10 -sticky e
+    ttk::style element create Menubutton.indicator image $I(down) -width [::sv_ttk::px 10] -sticky e
 
     # OptionMenu
     ttk::style layout TOptionMenu {
@@ -124,7 +129,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
     
-    ttk::style configure TOptionMenu -padding {8 2 13 3}
+    ttk::style configure TOptionMenu -padding [::sv_ttk::px {8 2 13 3}]
 
     ttk::style element create OptionMenu.button image \
       [list $I(button-rest) \
@@ -133,9 +138,9 @@ namespace eval ttk::theme::sv_dark {
         {active focus} $I(button-focus-hover) \
         active $I(button-hover) \
         focus $I(button-focus) \
-      ] -border 4 -sticky nsew 
+      ] -border [::sv_ttk::px 4] -sticky nsew 
 
-    ttk::style element create OptionMenu.indicator image $I(down) -width 10 -sticky e
+    ttk::style element create OptionMenu.indicator image $I(down) -width [::sv_ttk::px 10] -sticky e
 
     # Checkbutton
     ttk::style layout TCheckbutton {
@@ -147,7 +152,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure TCheckbutton -padding 4
+    ttk::style configure TCheckbutton -padding [::sv_ttk::px 4]
 
     ttk::style element create Checkbutton.indicator image \
       [list $I(check-unsel-rest) \
@@ -168,7 +173,7 @@ namespace eval ttk::theme::sv_dark {
         {active focus} $I(check-unsel-focus-hover) \
         active $I(check-unsel-hover) \
         focus $I(check-unsel-focus) \
-      ] -width 26 -sticky w
+      ] -width [::sv_ttk::px 26] -sticky w
 
     # Switch.TCheckbutton
     ttk::style layout Switch.TCheckbutton {
@@ -193,7 +198,7 @@ namespace eval ttk::theme::sv_dark {
         {active focus} $I(switch-off-focus-hover) \
         active $I(switch-off-hover) \
         focus $I(switch-off-focus) \
-      ] -width 46 -sticky w
+      ] -width [::sv_ttk::px 46] -sticky w
 
     # Toggle.TButton
     ttk::style layout Toggle.TButton {
@@ -204,7 +209,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure Toggle.TButton -padding {8 2 8 3} -anchor center -foreground $colors(-fg)
+    ttk::style configure Toggle.TButton -padding [::sv_ttk::px {8 2 8 3}] -anchor center -foreground $colors(-fg)
 
     ttk::style map Toggle.TButton -foreground \
       [list {selected disabled} "#9a989f" \
@@ -227,7 +232,7 @@ namespace eval ttk::theme::sv_dark {
         {active focus} $I(button-focus-hover) \
         active $I(button-hover) \
         focus $I(button-focus) \
-      ] -border 4 -sticky nsew
+      ] -border [::sv_ttk::px 4] -sticky nsew
 
     # Radiobutton
     ttk::style layout TRadiobutton {
@@ -239,7 +244,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure TRadiobutton -padding 4
+    ttk::style configure TRadiobutton -padding [::sv_ttk::px 4]
 
     ttk::style element create Radiobutton.indicator image \
       [list $I(radio-unsel-rest) \
@@ -254,10 +259,10 @@ namespace eval ttk::theme::sv_dark {
         {active focus} $I(radio-unsel-focus-hover) \
         active $I(radio-unsel-hover) \
         focus $I(radio-unsel-focus) \
-      ] -width 26 -sticky w
+      ] -width [::sv_ttk::px 26] -sticky w
 
     # Entry
-    ttk::style configure TEntry -foreground $colors(-fg) -padding {6 1 4 2}
+    ttk::style configure TEntry -foreground $colors(-fg) -padding [::sv_ttk::px {6 1 4 2}]
     ttk::style map TEntry -foreground [list disabled "#6c6b71" pressed "#c2c0c7"]
 
     ttk::style element create Entry.field image \
@@ -267,7 +272,7 @@ namespace eval ttk::theme::sv_dark {
         disabled $I(textbox-dis) \
         {focus !invalid} $I(textbox-focus) \
         hover $I(textbox-hover) \
-      ] -border 5 -sticky nsew
+      ] -border [::sv_ttk::px 5] -sticky nsew
 
     # Combobox
     ttk::style layout TCombobox {
@@ -279,7 +284,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
         
-    ttk::style configure TCombobox -foreground $colors(-fg) -padding {6 1 0 2}
+    ttk::style configure TCombobox -foreground $colors(-fg) -padding [::sv_ttk::px {6 1 0 2}]
     ttk::style configure ComboboxPopdownFrame -borderwidth 1 -relief solid
     ttk::style map TCombobox -foreground [list disabled "#6c6b71" pressed "#c2c0c7"]
     
@@ -304,9 +309,9 @@ namespace eval ttk::theme::sv_dark {
         focus $I(textbox-focus) \
         {focus !invalid} $I(textbox-focus) \
         hover $I(textbox-hover) \
-      ] -border 5
+      ] -border [::sv_ttk::px 5]
         
-    ttk::style element create Combobox.arrow image $I(down) -width 34 -sticky {}
+    ttk::style element create Combobox.arrow image $I(down) -width [::sv_ttk::px 34] -sticky {}
 
     # Spinbox
     ttk::style layout TSpinbox {
@@ -319,7 +324,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure TSpinbox -foreground $colors(-fg) -padding {6 1 0 2}
+    ttk::style configure TSpinbox -foreground $colors(-fg) -padding [::sv_ttk::px {6 1 0 2}]
     ttk::style map TSpinbox -foreground [list disabled "#6c6b71" pressed "#c2c0c7"]
 
     ttk::style element create Spinbox.field image \
@@ -330,24 +335,24 @@ namespace eval ttk::theme::sv_dark {
         focus $I(textbox-focus) \
         {focus !invalid} $I(textbox-focus) \
         hover $I(textbox-hover) \
-      ] -border 5 -sticky nsew
+      ] -border [::sv_ttk::px 5] -sticky nsew
 
-    ttk::style element create Spinbox.uparrow image $I(up) -width 34 -height 16 -sticky {}
-    ttk::style element create Spinbox.downarrow image $I(down) -width 34 -height 16 -sticky {}
+    ttk::style element create Spinbox.uparrow image $I(up) -width [::sv_ttk::px 34] -height [::sv_ttk::px 16] -sticky {}
+    ttk::style element create Spinbox.downarrow image $I(down) -width [::sv_ttk::px 34] -height [::sv_ttk::px 16] -sticky {}
 
     # Progressbar
-    ttk::style element create Horizontal.Progressbar.trough image $I(progressbar-trough-hor) -border 1 -sticky ew
-    ttk::style element create Horizontal.Progressbar.pbar image $I(progressbar-bar-hor) -border 2 -sticky ew
+    ttk::style element create Horizontal.Progressbar.trough image $I(progressbar-trough-hor) -border [::sv_ttk::px 1] -sticky ew
+    ttk::style element create Horizontal.Progressbar.pbar image $I(progressbar-bar-hor) -border [::sv_ttk::px 2] -sticky ew
 
-    ttk::style element create Vertical.Progressbar.trough image $I(progressbar-trough-vert) -border 1 -sticky ns
-    ttk::style element create Vertical.Progressbar.pbar image $I(progressbar-bar-vert) -border 2 -sticky ns
+    ttk::style element create Vertical.Progressbar.trough image $I(progressbar-trough-vert) -border [::sv_ttk::px 1] -sticky ns
+    ttk::style element create Vertical.Progressbar.pbar image $I(progressbar-bar-vert) -border [::sv_ttk::px 2] -sticky ns
 
     # Scale
     ttk::style element create Horizontal.Scale.trough image $I(slider-trough-hor) \
-      -border 5 -padding 0 -sticky {ew}
+      -border [::sv_ttk::px 5] -padding [::sv_ttk::px 0] -sticky {ew}
 
     ttk::style element create Vertical.Scale.trough image $I(slider-trough-vert) \
-      -border 5 -padding 0 -sticky {ns}
+      -border [::sv_ttk::px 5] -padding [::sv_ttk::px 0] -sticky {ns}
 
     ttk::style element create Scale.slider image \
       [list $I(slider-thumb-rest) \
@@ -375,20 +380,20 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style element create Horizontal.Scrollbar.trough image $I(scrollbar-trough-hor) -sticky ew -border {6 0}
-    ttk::style element create Horizontal.Scrollbar.thumb image $I(scrollbar-thumb-hor) -sticky ew -border {3 0}
+    ttk::style element create Horizontal.Scrollbar.trough image $I(scrollbar-trough-hor) -sticky ew -border [::sv_ttk::px {6 0}]
+    ttk::style element create Horizontal.Scrollbar.thumb image $I(scrollbar-thumb-hor) -sticky ew -border [::sv_ttk::px {3 0}]
 
-    ttk::style element create Horizontal.Scrollbar.rightarrow image $I(scrollbar-right) -sticky e -width 13
-    ttk::style element create Horizontal.Scrollbar.leftarrow image $I(scrollbar-left) -sticky w -width 13
+    ttk::style element create Horizontal.Scrollbar.rightarrow image $I(scrollbar-right) -sticky e -width [::sv_ttk::px 13]
+    ttk::style element create Horizontal.Scrollbar.leftarrow image $I(scrollbar-left) -sticky w -width [::sv_ttk::px 13]
 
-    ttk::style element create Vertical.Scrollbar.trough image $I(scrollbar-trough-vert) -sticky ns -border {0 6}
-    ttk::style element create Vertical.Scrollbar.thumb image $I(scrollbar-thumb-vert) -sticky ns -border {0 3}
+    ttk::style element create Vertical.Scrollbar.trough image $I(scrollbar-trough-vert) -sticky ns -border [::sv_ttk::px {0 6}]
+    ttk::style element create Vertical.Scrollbar.thumb image $I(scrollbar-thumb-vert) -sticky ns -border [::sv_ttk::px {0 3}]
 
-    ttk::style element create Vertical.Scrollbar.uparrow image $I(scrollbar-up) -sticky n -height 13
-    ttk::style element create Vertical.Scrollbar.downarrow image $I(scrollbar-down) -sticky s -height 13
+    ttk::style element create Vertical.Scrollbar.uparrow image $I(scrollbar-up) -sticky n -height [::sv_ttk::px 13]
+    ttk::style element create Vertical.Scrollbar.downarrow image $I(scrollbar-down) -sticky s -height [::sv_ttk::px 13]
 
     # Separator
-    ttk::style element create Separator.separator image $I(sep) -width 1 -height 1
+    ttk::style element create Separator.separator image $I(sep) -width [::sv_ttk::px 1] -height [::sv_ttk::px 1]
 
     # Sizegrip
     ttk::style element create Sizegrip.sizegrip image $I(grip) -sticky nsew
@@ -400,7 +405,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style element create Card.field image $I(card) -border 10 -padding 4 -sticky nsew
+    ttk::style element create Card.field image $I(card) -border [::sv_ttk::px 10] -padding [::sv_ttk::px 4] -sticky nsew
 
     # Labelframe
     ttk::style layout TLabelframe {
@@ -411,7 +416,7 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style element create Labelframe.border image $I(card) -border 5 -padding 4 -sticky nsew
+    ttk::style element create Labelframe.border image $I(card) -border [::sv_ttk::px 5] -padding [::sv_ttk::px 4] -sticky nsew
     ttk::style configure TLabelframe.Label -font SunValleyCaptionFont
 
     # Notebook
@@ -421,45 +426,52 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure TNotebook -padding 1
+    ttk::style configure TNotebook -padding [::sv_ttk::px 1]
     ttk::style configure TNotebook.Tab -focuscolor $colors(-accent)
-    ttk::style element create Notebook.border image $I(notebook-border) -border 5 -padding 5
+    ttk::style element create Notebook.border image $I(notebook-border) -border [::sv_ttk::px 5] -padding [::sv_ttk::px 5]
 
     ttk::style element create Notebook.tab image \
       [list $I(tab-rest) \
         selected $I(tab-selected) \
         active $I(tab-hover) \
-      ] -border 13 -padding {16 14 16 6} -height 32
+      ] -border [::sv_ttk::px 13] -padding [::sv_ttk::px {16 14 16 6}] -height [::sv_ttk::px 32]
 
     # Treeview
     ttk::style configure Heading -font SunValleyCaptionFont
     ttk::style configure Treeview \
         -background $colors(-bg) \
-        -rowheight [expr {[font metrics SunValleyBodyFont -linespace] + 3}] \
+        -rowheight [expr {[font metrics SunValleyBodyFont -linespace] + [::sv_ttk::px 3]}] \
         -font SunValleyBodyFont
 
     ttk::style map Treeview -background {selected "#242328"} -foreground "selected $colors(-selfg)"
 
-    ttk::style element create Treeview.field image $I(card) -border 5 -width 0 -height 0
+    ttk::style element create Treeview.field image $I(card) -border [::sv_ttk::px 5] -width [::sv_ttk::px 0] -height [::sv_ttk::px 0]
     
     ttk::style element create Treeheading.cell image \
       [list $I(heading-rest) \
         pressed $I(heading-pressed) \
         active $I(heading-hover)
-      ] -border 5 -padding 14 -sticky nsew
+      ] -border [::sv_ttk::px 5] -padding [::sv_ttk::px 14] -sticky nsew
     
-    ttk::style element create Treeitem.indicator image \
-      [list $I(right) \
-        user2 $I(empty) \
-        user1 $I(down) \
-      ] -width 26 -sticky {}
+    if {[package vsatisfies [package provide Tk] 9-]} {
+      # Tk 9 no longer exposes the open/leaf item states, so use its drawn arrow
+      ttk::style configure Item -foreground $colors(-fg) \
+        -indicatorsize [::sv_ttk::px 9] -indicatormargins [::sv_ttk::px {8 0 9 0}]
+      ttk::style map Item -foreground [ttk::style map Treeview -foreground]
+    } else {
+      ttk::style element create Treeitem.indicator image \
+        [list $I(right) \
+          user2 $I(empty) \
+          user1 $I(down) \
+        ] -width [::sv_ttk::px 26] -sticky {}
+    }
 
     # Panedwindow
     ttk::style configure Sash \
       -lightcolor "#939298" \
       -darkcolor "#939298" \
       -bordercolor "#939298" \
-      -sashthickness 4 \
+      -sashthickness [::sv_ttk::px 4] \
       -gripcount 20
   }
 }

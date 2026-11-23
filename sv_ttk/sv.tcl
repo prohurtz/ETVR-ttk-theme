@@ -1,7 +1,47 @@
 package require Tk 8.6-
 
-source [file join [file dirname [info script]] theme light.tcl]
-source [file join [file dirname [info script]] theme dark.tcl]
+namespace eval ::sv_ttk {
+  variable dir [file dirname [file normalize [info script]]]
+
+  # Sprite sheets ship at these scales (file suffix "" for 1x, else e.g. "_150").
+  variable scales {1 1.25 1.5 1.75 2 2.5 3}
+
+  # UI scale: the display's DPI relative to 96. Aqua scales HiDPI itself.
+  # Set ::sv_ttk::requested_scale before sourcing this file to override it.
+  if {[info exists requested_scale]} {
+    variable factor [expr {double($requested_scale)}]
+  } elseif {[tk windowingsystem] eq "aqua"} {
+    variable factor 1.0
+  } else {
+    variable factor [expr {[tk scaling] * 72.0 / 96.0}]
+  }
+  if {$factor < 1.0} { set factor 1.0 }
+
+  # Images and pixel sizes use the nearest shipped scale; fonts use the exact factor.
+  variable scale 1
+  foreach s $scales {
+    if {abs($s - $factor) < abs($scale - $factor) - 1e-9} { set scale $s }
+  }
+
+  proc px {values} {
+    variable scale
+    set out {}
+    foreach v $values { lappend out [expr {round($v * $scale)}] }
+    return $out
+  }
+
+  proc suffix {} {
+    variable scale
+    if {$scale == 1} { return "" }
+    return [format "_%d" [expr {round($scale * 100)}]]
+  }
+
+  # Themes load on first use (ttk::setTheme does `package require ttk::theme::<name>`).
+  foreach theme {light dark} {
+    package ifneeded ttk::theme::sun-valley-$theme 2.8.0 \
+      [list source [file join $dir theme $theme.tcl]]
+  }
+}
 
 
 if {[tk windowingsystem] == "win32"} {
@@ -10,14 +50,26 @@ if {[tk windowingsystem] == "win32"} {
   set static " static"
 }
 
-font create SunValleyCaptionFont -family "Segoe UI Variable$static Small" -size -12
-font create SunValleyBodyFont -family "Segoe UI Variable$static Text" -size -14
-font create SunValleyBodyStrongFont -family "Segoe UI Variable$static Text Semibold" -size -14
-font create SunValleyBodyLargeFont -family "Segoe UI Variable$static Text" -size -18
-font create SunValleySubtitleFont -family "Segoe UI Variable$static Display Semibold" -size -20
-font create SunValleyTitleFont -family "Segoe UI Variable$static Display Semibold" -size -28
-font create SunValleyTitleLargeFont -family "Segoe UI Variable$static Display Semibold" -size -40
-font create SunValleyDisplayFont -family "Segoe UI Variable$static Display Semibold" -size -68
+# Fonts come before the themes: the Treeview row height is measured from SunValleyBodyFont.
+foreach {name family size} {
+  SunValleyCaptionFont "Small" 12
+  SunValleyBodyFont "Text" 14
+  SunValleyBodyStrongFont "Text Semibold" 14
+  SunValleyBodyLargeFont "Text" 18
+  SunValleySubtitleFont "Display Semibold" 20
+  SunValleyTitleFont "Display Semibold" 28
+  SunValleyTitleLargeFont "Display Semibold" 40
+  SunValleyDisplayFont "Display Semibold" 68
+} {
+  if {[tk windowingsystem] == "win32"} {
+    set family "Segoe UI Variable$static $family"
+  } else {
+    # Segoe isn't installed here and the fallback search is slow (~40 ms);
+    # name the family it would fall back to.
+    set family [font actual TkDefaultFont -family]
+  }
+  font create $name -family $family -size [expr {-round($size * $::sv_ttk::factor)}]
+}
 
 
 proc config_entry_font {w} {
@@ -67,6 +119,59 @@ proc config_menus {w} {
 }
 
 
+# tk_setPalette builds a hidden toplevel holding one of every classic widget class
+# (~30 ms) and probes every option on every widget. This applies the same colours and
+# option-database defaults, probing each widget class only once.
+namespace eval ::sv_ttk {
+  variable class_options
+
+  proc set_palette {args} {
+    array set new $args
+    lassign [winfo rgb . $new(background)] bg_r bg_g bg_b
+    lassign [winfo rgb . $new(foreground)] fg_r fg_g fg_b
+    set darkerBg [format #%02x%02x%02x [expr {(9*$bg_r)/2560}] \
+      [expr {(9*$bg_g)/2560}] [expr {(9*$bg_b)/2560}]]
+    foreach i {activeForeground insertBackground selectForeground highlightColor} {
+      if {![info exists new($i)]} { set new($i) $new(foreground) }
+    }
+    if {![info exists new(disabledForeground)]} {
+      set new(disabledForeground) [format #%02x%02x%02x \
+        [expr {(3*$bg_r + $fg_r)/1024}] [expr {(3*$bg_g + $fg_g)/1024}] \
+        [expr {(3*$bg_b + $fg_b)/1024}]]
+    }
+    foreach i {highlightBackground buttonBackground} {
+      if {![info exists new($i)]} { set new($i) $new(background) }
+    }
+    if {![info exists new(selectColor)]} {
+      set new(selectColor) [expr {$bg_r+1.5*$bg_g+0.5*$bg_b > 100000 ? "white" : "black"}]
+    }
+    foreach i {selectBackground troughColor} {
+      if {![info exists new($i)]} { set new($i) $darkerBg }
+    }
+
+    set options {}
+    foreach name [array names new] { lappend options $name -[string tolower $name] }
+    recolor . $options new
+
+    foreach name [array names new] { option add *$name $new($name) widgetDefault }
+    array set ::tk::Palette [array get new]
+  }
+
+  proc recolor {w options colors} {
+    variable class_options
+    upvar $colors c
+    set class [winfo class $w]
+    if {![info exists class_options($class)]} {
+      set class_options($class) {}
+      foreach {name option} $options {
+        if {![catch {$w cget $option}]} { lappend class_options($class) $name $option }
+      }
+    }
+    foreach {name option} $class_options($class) { $w configure $option $c($name) }
+    foreach child [winfo children $w] { recolor $child $options c }
+  }
+}
+
 proc configure_colors {} {
   set theme [ttk::style theme use]
   if {$theme == "sun-valley-dark"} {
@@ -84,7 +189,7 @@ proc configure_colors {} {
       -borderwidth 0 \
       -relief flat
 
-    tk_setPalette \
+    ::sv_ttk::set_palette \
       background $ttk::theme::sv_dark::colors(-bg) \
       foreground $ttk::theme::sv_dark::colors(-fg) \
       highlightColor $ttk::theme::sv_dark::colors(-selbg) \
@@ -109,7 +214,7 @@ proc configure_colors {} {
       -borderwidth 0 \
       -relief flat
 
-    tk_setPalette \
+    ::sv_ttk::set_palette \
       background $ttk::theme::sv_light::colors(-bg) \
       foreground $ttk::theme::sv_light::colors(-fg) \
       highlightColor $ttk::theme::sv_light::colors(-selbg) \
