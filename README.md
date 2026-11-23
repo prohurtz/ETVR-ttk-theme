@@ -4,6 +4,7 @@
 Make your Tkinter application look better than ever with just two lines of code!
 
 ![Screenshot of Sun Valley ttk theme](assets/screenshot.png)
+![Screenshot of Sun Valley ttk theme, light mode](assets/screenshot_light.png)
 
 </div>
 
