@@ -4,12 +4,12 @@ namespace eval ttk::theme::sv_dark {
   package provide ttk::theme::sv_dark 2.5
 
   array set colors {
-    -fg      "#fafafa"
-    -bg      "#1c1c1c"
-    -disfg   "#595959"
+    -fg      "#ebe9f0"
+    -bg      "#18171c"
+    -disfg   "#525056"
     -selfg   "#ffffff"
-    -selbg   "#2f60d8"
-    -accent  "#57c8ff"
+    -selbg   "#6750c8"
+    -accent  "#b5a0ee"
   }
 
   proc load_images {imgfile} {
@@ -35,7 +35,7 @@ namespace eval ttk::theme::sv_dark {
     }
 
     ttk::style configure TButton -padding {8 2 8 3} -anchor center -foreground $colors(-fg)
-    ttk::style map TButton -foreground [list disabled "#7a7a7a" pressed "#d0d0d0"]
+    ttk::style map TButton -foreground [list disabled "#717076" pressed "#c3c1c8"]
     
     ttk::style element create Button.button image \
       [list $I(button-rest) \
@@ -77,8 +77,8 @@ namespace eval ttk::theme::sv_dark {
       }
     }
 
-    ttk::style configure Accent.TButton -padding {8 2 8 3} -anchor center -foreground "#000000"
-    ttk::style map Accent.TButton -foreground [list pressed "#25536a" disabled "#a5a5a5"]
+    ttk::style configure Accent.TButton -padding {8 2 8 3} -anchor center -foreground "#18171c"
+    ttk::style map Accent.TButton -foreground [list pressed "#463d5e" disabled "#9a989f"]
 
     ttk::style element create AccentButton.button image \
       [list $I(button-accent-rest) \
@@ -207,11 +207,11 @@ namespace eval ttk::theme::sv_dark {
     ttk::style configure Toggle.TButton -padding {8 2 8 3} -anchor center -foreground $colors(-fg)
 
     ttk::style map Toggle.TButton -foreground \
-      [list {selected disabled} "#a5a5a5" \
-        {selected pressed} "#d0d0d0" \
-        selected "#000000" \
-        pressed "#25536a" \
-        disabled "#7a7a7a"
+      [list {selected disabled} "#9a989f" \
+        {selected pressed} "#c3c1c8" \
+        selected "#18171c" \
+        pressed "#463d5e" \
+        disabled "#717076"
       ]
 
     ttk::style element create ToggleButton.button image \
@@ -258,7 +258,7 @@ namespace eval ttk::theme::sv_dark {
 
     # Entry
     ttk::style configure TEntry -foreground $colors(-fg) -padding {6 1 4 2}
-    ttk::style map TEntry -foreground [list disabled "#757575" pressed "#cfcfcf"]
+    ttk::style map TEntry -foreground [list disabled "#6c6b71" pressed "#c2c0c7"]
 
     ttk::style element create Entry.field image \
       [list $I(textbox-rest) \
@@ -281,7 +281,7 @@ namespace eval ttk::theme::sv_dark {
         
     ttk::style configure TCombobox -foreground $colors(-fg) -padding {6 1 0 2}
     ttk::style configure ComboboxPopdownFrame -borderwidth 1 -relief solid
-    ttk::style map TCombobox -foreground [list disabled "#757575" pressed "#cfcfcf"]
+    ttk::style map TCombobox -foreground [list disabled "#6c6b71" pressed "#c2c0c7"]
     
     ttk::style map TCombobox -selectbackground [list \
       {readonly hover} $colors(-selbg) \
@@ -320,7 +320,7 @@ namespace eval ttk::theme::sv_dark {
     }
 
     ttk::style configure TSpinbox -foreground $colors(-fg) -padding {6 1 0 2}
-    ttk::style map TSpinbox -foreground [list disabled "#757575" pressed "#cfcfcf"]
+    ttk::style map TSpinbox -foreground [list disabled "#6c6b71" pressed "#c2c0c7"]
 
     ttk::style element create Spinbox.field image \
       [list $I(textbox-rest) \
@@ -438,7 +438,7 @@ namespace eval ttk::theme::sv_dark {
         -rowheight [expr {[font metrics SunValleyBodyFont -linespace] + 3}] \
         -font SunValleyBodyFont
 
-    ttk::style map Treeview -background {selected "#292929"} -foreground "selected $colors(-selfg)"
+    ttk::style map Treeview -background {selected "#242328"} -foreground "selected $colors(-selfg)"
 
     ttk::style element create Treeview.field image $I(card) -border 5 -width 0 -height 0
     
@@ -456,9 +456,9 @@ namespace eval ttk::theme::sv_dark {
 
     # Panedwindow
     ttk::style configure Sash \
-      -lightcolor "#9e9e9e" \
-      -darkcolor "#9e9e9e" \
-      -bordercolor "#9e9e9e" \
+      -lightcolor "#939298" \
+      -darkcolor "#939298" \
+      -bordercolor "#939298" \
       -sashthickness 4 \
       -gripcount 20
   }

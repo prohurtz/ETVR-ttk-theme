@@ -11,16 +11,16 @@ long_description = re.sub(
 
 
 setup(
-    name="sv_ttk",
-    version="2.6.1",
+    name="etvr-ttk-theme",
+    version="2.7.0",
     license="MIT",
     author="rdbende",
     author_email="rdbende@proton.me",
-    url="https://github.com/rdbende/Sun-Valley-ttk-theme",
+    url="https://github.com/prohurtz/ETVR-ttk-theme",
     project_urls={
-        "Source": "https://github.com/rdbende/Sun-Valley-ttk-theme",
+        "Source": "https://github.com/prohurtz/ETVR-ttk-theme",
         "Documentation": "https://github.com/rdbende/Sun-Valley-ttk-theme/wiki",
-        "Tracker": "https://github.com/rdbende/Sun-Valley-ttk-theme/issues",
+        "Tracker": "https://github.com/prohurtz/ETVR-ttk-theme/issues",
     },
     description="A gorgeous theme for Tkinter, based on Windows 11's UI",
     long_description=long_description,

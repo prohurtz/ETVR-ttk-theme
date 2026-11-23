@@ -4,12 +4,12 @@ namespace eval ttk::theme::sv_light {
   package provide ttk::theme::sv_light 2.5
 
   array set colors {
-    -fg      "#1c1c1c"
-    -bg      "#fafafa"
-    -disfg   "#a0a0a0"
+    -fg      "#1f1d26"
+    -bg      "#faf9f7"
+    -disfg   "#a19fa3"
     -selfg   "#ffffff"
-    -selbg   "#2f60d8"
-    -accent  "#005fb8"
+    -selbg   "#6750c8"
+    -accent  "#6750c8"
   }
 
   proc load_images {imgfile} {
@@ -35,7 +35,7 @@ namespace eval ttk::theme::sv_light {
     }
 
     ttk::style configure TButton -padding {8 2 8 3} -anchor center -foreground $colors(-fg)
-    ttk::style map TButton -foreground [list disabled "#a2a2a2" pressed "#636363" active "#1a1a1a"]
+    ttk::style map TButton -foreground [list disabled "#a3a1a5" pressed "#63616d" active "#1d1b24"]
     
     ttk::style element create Button.button image \
       [list $I(button-rest) \
@@ -77,8 +77,8 @@ namespace eval ttk::theme::sv_light {
       }
     }
 
-    ttk::style configure Accent.TButton -padding {8 2 8 3} -anchor center -foreground "#ffffff"
-    ttk::style map Accent.TButton -foreground [list pressed "#c1d8ee" disabled "#ffffff"]
+    ttk::style configure Accent.TButton -padding {8 2 8 3} -anchor center -foreground "#faf9f7"
+    ttk::style map Accent.TButton -foreground [list pressed "#dcdafa" disabled "#ffffff"]
 
     ttk::style element create AccentButton.button image \
       [list $I(button-accent-rest) \
@@ -208,11 +208,11 @@ namespace eval ttk::theme::sv_light {
 
     ttk::style map Toggle.TButton -foreground \
       [list {selected disabled} "#ffffff" \
-        {selected pressed} "#636363" \
-        selected "#ffffff" \
-        pressed "#c1d8ee" \
-        disabled "#a2a2a2" \
-        active "#1a1a1a"
+        {selected pressed} "#63616d" \
+        selected "#faf9f7" \
+        pressed "#dcdafa" \
+        disabled "#a3a1a5" \
+        active "#1d1b24"
       ]
 
     ttk::style element create ToggleButton.button image \
@@ -259,7 +259,7 @@ namespace eval ttk::theme::sv_light {
 
     # Entry
     ttk::style configure TEntry -foreground $colors(-fg) -padding {6 1 4 2}
-    ttk::style map TEntry -foreground [list disabled $colors(-disfg) pressed "#636363" active "#626262"]
+    ttk::style map TEntry -foreground [list disabled $colors(-disfg) pressed "#63616d" active "#62606c"]
 
     ttk::style element create Entry.field image \
       [list $I(textbox-rest) \
@@ -282,7 +282,7 @@ namespace eval ttk::theme::sv_light {
 
     ttk::style configure TCombobox -foreground $colors(-fg) -padding {6 1 0 2}
     ttk::style configure ComboboxPopdownFrame -borderwidth 1 -relief solid
-    ttk::style map TCombobox -foreground [list disabled $colors(-disfg) pressed "#636363" active "#626262"]
+    ttk::style map TCombobox -foreground [list disabled $colors(-disfg) pressed "#63616d" active "#62606c"]
     
     ttk::style map TCombobox -selectbackground [list \
       {readonly hover} $colors(-selbg) \
@@ -321,7 +321,7 @@ namespace eval ttk::theme::sv_light {
     }
 
     ttk::style configure TSpinbox -foreground $colors(-fg) -padding {6 1 0 2}
-    ttk::style map TSpinbox -foreground [list disabled $colors(-disfg) pressed "#636363" active "#626262"]
+    ttk::style map TSpinbox -foreground [list disabled $colors(-disfg) pressed "#63616d" active "#62606c"]
 
     ttk::style element create Spinbox.field image \
       [list $I(textbox-rest) \
@@ -443,7 +443,7 @@ namespace eval ttk::theme::sv_light {
         -rowheight [expr {[font metrics SunValleyBodyFont -linespace] + 3}] \
         -font SunValleyBodyFont
 
-    ttk::style map Treeview -background {selected "#e7e7e7"} -foreground {selected "#191919"}
+    ttk::style map Treeview -background {selected "#e8e7e3"} -foreground {selected "#1c1a22"}
 
     ttk::style element create Treeview.field image $I(card) -border 5 -width 0 -height 0
     ttk::style element create Treeheading.cell image \
@@ -460,9 +460,9 @@ namespace eval ttk::theme::sv_light {
 
     # Panedwindow
     ttk::style configure Sash \
-      -lightcolor "#676767" \
-      -darkcolor "#676767" \
-      -bordercolor "#676767" \
+      -lightcolor "#676571" \
+      -darkcolor "#676571" \
+      -bordercolor "#676571" \
       -sashthickness 4 \
       -gripcount 20
   }
